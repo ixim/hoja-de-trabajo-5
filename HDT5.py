@@ -2,7 +2,7 @@
 """
 Hoja de trabajo No. 5
 Ixim Cojti Lopez    12697
-Luis Tello          
+Luis Tello          12
 
 Esta es una simulación de un procesador al llevar a cabo varios procesos
 """
@@ -63,7 +63,7 @@ totalwait = 0
 
 #comienza el proceso
 procesador = simpy.Resource(env, capacity=1)
-RAMtotal = 50#simpy.Container(env, capacity=100, init=3)
+RAMtotal = simpy.Container(env, capacity=100, init=3)
 
 env.process(inicio(env, procesador, INTERVALO_PROCESOS))
 env.run()
