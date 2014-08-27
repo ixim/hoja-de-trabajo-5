@@ -15,7 +15,7 @@ RAMDOM_SEED = 3
 
 def inicio(env,procesador,intervalo):
     
-    for i in range(15):
+    for i in range(10):
         instrucciones = random.randint(1,10)#se asigna la cant de instrucciones q tiene el proceso
         c = new(env,procesador,instrucciones,'Proceso%02d' % i)
         env.process(c)
@@ -25,19 +25,26 @@ def inicio(env,procesador,intervalo):
 def new (env,procesador,instrucciones,name):
     global RAMtotal,RAMnuevo
     RAMnuevo = random.randint(1,10)#numero aleatorio del ram requerido por proceso
-    RAMtotal = RAMtotal - RAMnuevo#ram restante de total
+
+    RAMtotal.get(RAMnuevo)
     print('RAM libre: %7.4f %s RAM asignado:%7.4f Instrucciones:%7.4f' % (RAMtotal, name,RAMnuevo,instrucciones))
-    
+    """
+    with RAMtotal(RAMnuevo) as req:
+        yield req
+        print('RAM libre: %7.4f %s RAM asignado:%7.4f Instrucciones:%7.4f' % (RAMtotal.level, name,RAMnuevo,instrucciones))
+)
+"""
     if RAMtotal > RAMnuevo:#si el ram nuevo asignado es menor al ram restante, se puede realizar 
         env.process(ready(env,procesador,instrucciones,name))
-    else:#VERIFICAR ESTA PARTE DE CUANDO HACE FALTA ESPERAR PARA OBTENER RAM
-        with RAMnuevo.request() as req:  #pedimos conectarnos al
-            RAMnuevo = random.uniform(1, 10)#ram
+    else:
+        with procesador.request() as req:  #pedimos conectarnos al
+            tiempo = random.uniform(1, 10)#ram
             yield req
 
             tib = random.expovariate(1.0 / 10)
             yield env.timeout(tib)#se espera el tiempo asignado a tib
-            print('%7.4f %s: Finished' % (env.now, name))
+            print('%7.4f %s: Termina tiempo de espera' % (env.now, name))
+            env.process(ready(env,procesador,instrucciones,name))
 
 def ready(env,procesador,instrucciones,name):
     global wait,totalwait,RAMtotal,RAMnuevo
@@ -63,8 +70,8 @@ totalwait = 0
 
 #comienza el proceso
 procesador = simpy.Resource(env, capacity=1)
-RAMtotal = simpy.Container(env, capacity=100, init=3)
-
+RAMtotal = simpy.Container(env, init=100, capacity=100)
+#waiting = simpy.Resource(env, capacity=1)
 env.process(inicio(env, procesador, INTERVALO_PROCESOS))
 env.run()
 
