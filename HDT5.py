@@ -2,7 +2,7 @@
 """
 Hoja de trabajo No. 5
 Ixim Cojti Lopez    12697
-Luis Tello          12
+Luis Tello          
 
 Esta es una simulación de un procesador al llevar a cabo varios procesos
 """
@@ -68,4 +68,4 @@ RAMtotal = 50#simpy.Container(env, capacity=100, init=3)
 env.process(inicio(env, procesador, INTERVALO_PROCESOS))
 env.run()
 
-print 'tiempo total de espera', totalwait, 'promedio: ',totalwait / 20.0
+print 'tiempo total de espera', totalwait, 'promedio: ',totalwait / 5.0
