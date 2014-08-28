@@ -10,9 +10,9 @@ Esta es una simulación de un procesador al llevar a cabo varios procesos
 import simpy
 import random
 
-INTERVALO_PROCESOS = 10#tiempo creacion de procesos de forma exponencial
+INTERVALO_PROCESOS = 1#tiempo creacion de procesos de forma exponencial
 RAMDOM_SEED = 3
-PROCESOS = 10
+PROCESOS = 150#PROBAR CON PROCESOS DE 25,50,100,150 Y 200 
 
 def inicio(env,RAMtotal,procesador,intervalo,PROCESOS,waiting):
     for i in range(PROCESOS):
